@@ -2,3 +2,4 @@
 *.zip
 lagrange.py
 polynomials.py
+__pycache__
