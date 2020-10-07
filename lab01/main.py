@@ -14,9 +14,8 @@
 
 import numpy as np
 from typing import Callable, List, Tuple
-import automatic as at
-import manual as mn
-import graphics as gr
+import automatic as at, manual as mn, graphics as gr, more_precise as mp
+
 
 
 def lagrange(xs: List[float], ys: List[float], x: float) -> float:
@@ -45,11 +44,12 @@ if __name__ == "__main__":
     auto_pairs = at.get_auto_pairs(auto_pairs, funct, a, b, h_0)
     #manual_pairs = mn.get_stable_pairs(f, len(auto_pairs), a, b)
 
+    print(f"Кол-во пар при автоматическом: {len(auto_pairs)}")
     for x, y in auto_pairs:
         xs_auto.append(x)
         ys_auto.append(y)
 
     def f(x: float) -> float:
-        return lagrange(xs_auto, ys_auto, x)
+        return mp.more_precise_value(funct, x_0, y_0, x, (b - a)/len(auto_pairs))
 
     gr.print_table(auto_pairs, f)
