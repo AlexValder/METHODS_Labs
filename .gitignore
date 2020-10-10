@@ -1,5 +1,4 @@
 *.7z
 *.zip
-lagrange.py
-polynomials.py
+/*.py
 __pycache__

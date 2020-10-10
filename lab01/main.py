@@ -14,12 +14,7 @@
 
 import numpy as np
 from typing import Callable, List, Tuple
-import automatic as at, manual as mn, graphics as gr, more_precise as mp
-
-
-
-def lagrange(xs: List[float], ys: List[float], x: float) -> float:
-    return sum(np.product([(x - xs[j])/(xs[i] - xs[j]) for j in range(len(xs)) if i != j]) * ys[i] for i in range(len(xs)))
+import methods as mth, graphics as gr, more_precise as mp
 
 
 def funct(x: float, y: float) -> float:
@@ -40,16 +35,24 @@ if __name__ == "__main__":
 
     xs_auto: List[float] = []
     ys_auto: List[float] = []
+    xs_stable: List[float] = []
+    ys_stable: List[float] = []
 
-    auto_pairs = at.get_auto_pairs(auto_pairs, funct, a, b, h_0)
-    #manual_pairs = mn.get_stable_pairs(f, len(auto_pairs), a, b)
+    auto_pairs = mth.get_auto_pairs(funct, x_0, y_0, a, b, h_0)
+    stable_pairs = mth.get_stable_pairs(funct, x_0, y_0, a, b, .1)
 
     print(f"Кол-во пар при автоматическом: {len(auto_pairs)}")
+
     for x, y in auto_pairs:
         xs_auto.append(x)
         ys_auto.append(y)
+
+    for x, y in stable_pairs:
+        xs_stable.append(x)
+        ys_stable.append(y)
 
     def f(x: float) -> float:
         return mp.more_precise_value(funct, x_0, y_0, x, (b - a)/len(auto_pairs))
 
     gr.print_table(auto_pairs, f)
+    gr.draw_graph((xs_auto, ys_auto, "С авто шагом"), (xs_stable, ys_stable, "Со стаб. шагом"), (xs_auto, [f(x) for x in xs_auto], "Точное решение"))
