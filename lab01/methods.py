@@ -51,6 +51,48 @@ def get_auto_pairs(f: Callable[[float, float], float], x_0: float, y_0: float, a
 
     res_pairs: List[Tuple[float, float]] = [(x_0, y_0)]
 
+    x_n = x_0; y_n = y_0; h_n = h_0; h_n2 = h_0 / 2
+
+    #i = 0
+
+    while abs(b - x_n) > eps_1:
+
+        if abs(b - x_n) < h_n:
+            h_n = abs(b - x_n)
+
+        #i += 1
+        #if i > 112:
+        #    print(len(res_pairs))
+        #    print(res_pairs[-1])
+        #    exit()
+
+        step_full = y_n + _runge(f, x_n, y_n, h_n)
+        step_half = y_n + _runge(f, x_n + h_n2, y_n + _runge(f, x_n, y_n, h_n2), h_n2)
+
+        eps_full = abs((step_full - step_half) * 2**k / (2**k - 1))
+        eps_half = abs((step_full - step_half) / (2**k - 1))
+
+        if eps_half > eps:
+            h_n = h_n2
+            h_n2 /= 2
+            continue
+
+        x_n += h_n
+        y_n = step_full
+
+        res_pairs.append((x_n, y_n))
+
+        if eps_full <= eps:
+            h_n2 = h_n
+            h_n *= 2
+        
+    return res_pairs
+
+
+def _get_auto_pairs(f: Callable[[float, float], float], x_0: float, y_0: float, a: float, b: float, h_0: float) -> List[Tuple[float, float]]:
+
+    res_pairs: List[Tuple[float, float]] = [(x_0, y_0)]
+
     # x_i, i > 0
     def _recursive2(x_n: float, y_n: float, h_n: float) -> List[Tuple[float, float]]:
 
@@ -67,7 +109,7 @@ def get_auto_pairs(f: Callable[[float, float], float], x_0: float, y_0: float, a
         y_n = y_h2 + eps_h2
         res_pairs.append((x_n, y_n))
 
-        if abs(eps_h) <= eps_1:
+        if abs(eps_h) <= eps:
             h_n *= 2
            
         return _recursive1(x_n, y_n, h_n)
@@ -94,3 +136,4 @@ def get_auto_pairs(f: Callable[[float, float], float], x_0: float, y_0: float, a
             return _recursive2(x_n, y_n, h_n)
 
     return _recursive1(x_0, y_0, h_0)
+

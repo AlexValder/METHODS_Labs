@@ -1,4 +1,4 @@
-from typing import Callable, Tuple, List, Dict
+from typing import Callable, Tuple, List
 
 
 def more_precise_list(f: Callable[[float, float], float], x_0: float, y_0: float, x_end: float, h: float) -> List[Tuple[float, float]]:
@@ -29,7 +29,7 @@ def more_precise_value(f: Callable[[float, float], float], x_0: float, y_0: floa
     
     def _recursive(x_n: float, y_n: float) -> float:
 
-        if x_n + h >= x:
+        if x_n >= x:
             return y_n
 
         k1 = h * f(x_n, y_n)
@@ -43,12 +43,3 @@ def more_precise_value(f: Callable[[float, float], float], x_0: float, y_0: floa
         return _recursive(x_n, y_n)
             
     return _recursive(x_0, y_0)
-
-
-if __name__ == "__main__":
-
-    def fun(x: float, y: float) -> float:
-        return x*y
-
-
-    print(more_precise_value(fun, 0.0, 1.0, 1.0, 0.1))

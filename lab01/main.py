@@ -18,7 +18,6 @@ import methods as mth, graphics as gr, more_precise as mp
 
 
 def funct(x: float, y: float) -> float:
-    #return x*y
     return x*y**3 - 1
 
 
@@ -28,6 +27,7 @@ a: float = 0.0
 b: float = 1.0
 h_0: float = 0.5
 
+accurate_step = 0.01
 
 if __name__ == "__main__":
 
@@ -53,11 +53,14 @@ if __name__ == "__main__":
         ys_stable.append(y)
 
     def f(x: float) -> float:
-        return mp.more_precise_value(funct, x_0, y_0, x, (b - a)/len(auto_pairs))
+        return mp.more_precise_value(funct, x_0, y_0, x, accurate_step)
 
     print("Таблица для автоматического шага:")
     gr.print_table(auto_pairs, f)
     print(f"Таблица для фиксированного шага (h = {(b - a)/len(auto_pairs)}):")
     gr.print_table(stable_pairs, f)
+
+    accurate_xs = [x for x in np.arange(0.0, 1.0 + accurate_step, accurate_step)]
+    accurate_ys = [f(x) for x in np.arange(0.0, 1.0 + accurate_step, accurate_step)]
     
-    gr.draw_graph((xs_auto, ys_auto, "С авто шагом"), (xs_stable, ys_stable, "Со стаб. шагом"), (xs_auto, [f(x) for x in xs_auto], "Точное решение"))
+    gr.draw_graph((accurate_xs, accurate_ys, "Точное решение"), (xs_auto, ys_auto, "С авто шагом"), (xs_stable, ys_stable, "Со стаб. шагом"))
