@@ -47,6 +47,53 @@ def get_stable_pairs(f: Callable[[float, float], float], x_0: float, y_0: float,
 
 
 def get_auto_pairs(f: Callable[[float, float], float], x_0: float, y_0: float, a: float, b: float, h_0: float) -> List[Tuple[float, float]]:
-    return get_stable_pairs(f, x_0, y_0, a, b, h_0)
 
+    res_pairs: List[Tuple[float, float]] = [(x_0, y_0)]
 
+    # x_i, i > 0
+    def _recursive2(x_n: float, y_n: float, h_n: float) -> List[Tuple[float, float]]:
+
+        if b - x_n <= eps_1:
+            return res_pairs
+
+        y_h2 = _runge(f, x_n, y_n, h_n/2)
+        y_h  = _runge(f, x_n + h_n/2, y_h2, h_n/2)
+
+        eps_h  = (y_h2 - y_h) * 2**k / (2**k - 1)
+        eps_h2 = (y_h2 - y_h) / (2**k - 1)
+
+        x_n += h_n
+        y_n = y_h2 + eps_h2
+        res_pairs.append((x_n, y_n))
+
+        if abs(eps_h) <= eps:
+            h_n *= 2
+
+        print(f"[2] x_n = {x_n}, y_n = {y_n}, h_n = {h_n}")  
+           
+        return _recursive2(x_n, y_n, h_n)
+
+    # x_0
+    def _recursive1(x_n: float, y_n: float, h_n: float) -> List[Tuple[float, float]]:
+
+        if b - x_n <= eps_1:
+            return res_pairs
+
+        y_h2 = _runge(f, x_n, y_n, h_n/2)
+        y_h  = _runge(f, x_n + h_n/2, y_h2, h_n/2)
+
+        eps_h  = (y_h2 - y_h) * 2**k / (2**k - 1)
+        eps_h2 = (y_h2 - y_h) / (2**k - 1)
+
+        if abs(eps_h2) > eps:
+            return _recursive1(x_n, y_n, h_n / 2)
+        else:
+            x_n += h_n
+            y_n = y_h2 + eps_h2
+            res_pairs.append((x_n, y_n))
+
+            print(f"[1] x_n = {x_n}, y_n = {y_n}, h_n = {h_n}")
+                
+            return _recursive2(x_n, y_n, h_n)
+
+    return _recursive1(x_0, y_0, h_0)
