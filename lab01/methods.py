@@ -27,8 +27,9 @@ def _runge(f: Callable[[float, float], float], x_i: float, y_i: float, h: float)
     return (phi_0 + 4*phi_1 + phi_2)/6
 
 
-def get_stable_pairs(f: Callable[[float, float], float], x_0: float, y_0: float, a: float, b: float, h: float) -> List[Tuple[float, float]]:
+def get_stable_pairs(f: Callable[[float, float], float], x_0: float, y_0: float, a: float, b: float, N: int) -> List[Tuple[float, float]]:
 
+    h = (b - a) / N
     res_pairs: List[Tuple[float, float]] = [(x_0, y_0)]
 
     def _recursive(x_n: float, y_n: float) -> List[Tuple[float, float]]:
@@ -68,8 +69,6 @@ def get_auto_pairs(f: Callable[[float, float], float], x_0: float, y_0: float, a
 
         if abs(eps_h) <= eps_1:
             h_n *= 2
-
-        print(f"[2] x_n = {x_n}, y_n = {y_n}, h_n = {h_n}")  
            
         return _recursive1(x_n, y_n, h_n)
 
@@ -91,8 +90,6 @@ def get_auto_pairs(f: Callable[[float, float], float], x_0: float, y_0: float, a
             x_n += h_n
             y_n = y_h2 + eps_h2
             res_pairs.append((x_n, y_n))
-
-            print(f"[1] x_n = {x_n}, y_n = {y_n}, h_n = {h_n}")
                 
             return _recursive2(x_n, y_n, h_n)
 

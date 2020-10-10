@@ -40,7 +40,7 @@ if __name__ == "__main__":
     ys_stable: List[float] = []
 
     auto_pairs = mth.get_auto_pairs(funct, x_0, y_0, a, b, h_0)
-    stable_pairs = mth.get_stable_pairs(funct, x_0, y_0, a, b, .125)
+    stable_pairs = mth.get_stable_pairs(funct, x_0, y_0, a, b, len(auto_pairs))
 
     print(f"Кол-во пар при автоматическом: {len(auto_pairs)}")
 
@@ -55,5 +55,9 @@ if __name__ == "__main__":
     def f(x: float) -> float:
         return mp.more_precise_value(funct, x_0, y_0, x, (b - a)/len(auto_pairs))
 
-    #gr.print_table(auto_pairs, f)
+    print("Таблица для автоматического шага:")
+    gr.print_table(auto_pairs, f)
+    print(f"Таблица для фиксированного шага (h = {(b - a)/len(auto_pairs)}):")
+    gr.print_table(stable_pairs, f)
+    
     gr.draw_graph((xs_auto, ys_auto, "С авто шагом"), (xs_stable, ys_stable, "Со стаб. шагом"), (xs_auto, [f(x) for x in xs_auto], "Точное решение"))
