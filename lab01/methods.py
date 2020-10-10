@@ -56,8 +56,8 @@ def get_auto_pairs(f: Callable[[float, float], float], x_0: float, y_0: float, a
         if b - x_n <= eps_1:
             return res_pairs
 
-        y_h2 = _runge(f, x_n, y_n, h_n/2)
-        y_h  = _runge(f, x_n + h_n/2, y_h2, h_n/2)
+        y_h2 = y_n + _runge(f, x_n, y_n, h_n/2)
+        y_h  = y_n + _runge(f, x_n + h_n/2, y_h2, h_n/2)
 
         eps_h  = (y_h2 - y_h) * 2**k / (2**k - 1)
         eps_h2 = (y_h2 - y_h) / (2**k - 1)
@@ -66,12 +66,12 @@ def get_auto_pairs(f: Callable[[float, float], float], x_0: float, y_0: float, a
         y_n = y_h2 + eps_h2
         res_pairs.append((x_n, y_n))
 
-        if abs(eps_h) <= eps:
+        if abs(eps_h) <= eps_1:
             h_n *= 2
 
         print(f"[2] x_n = {x_n}, y_n = {y_n}, h_n = {h_n}")  
            
-        return _recursive2(x_n, y_n, h_n)
+        return _recursive1(x_n, y_n, h_n)
 
     # x_0
     def _recursive1(x_n: float, y_n: float, h_n: float) -> List[Tuple[float, float]]:
@@ -79,8 +79,8 @@ def get_auto_pairs(f: Callable[[float, float], float], x_0: float, y_0: float, a
         if b - x_n <= eps_1:
             return res_pairs
 
-        y_h2 = _runge(f, x_n, y_n, h_n/2)
-        y_h  = _runge(f, x_n + h_n/2, y_h2, h_n/2)
+        y_h2 = y_n + _runge(f, x_n, y_n, h_n/2)
+        y_h  = y_n + _runge(f, x_n + h_n/2, y_h2, h_n/2)
 
         eps_h  = (y_h2 - y_h) * 2**k / (2**k - 1)
         eps_h2 = (y_h2 - y_h) / (2**k - 1)

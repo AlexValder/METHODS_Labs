@@ -18,6 +18,7 @@ import methods as mth, graphics as gr, more_precise as mp
 
 
 def funct(x: float, y: float) -> float:
+    #return x*y
     return x*y**3 - 1
 
 
@@ -39,7 +40,7 @@ if __name__ == "__main__":
     ys_stable: List[float] = []
 
     auto_pairs = mth.get_auto_pairs(funct, x_0, y_0, a, b, h_0)
-    stable_pairs = mth.get_stable_pairs(funct, x_0, y_0, a, b, (b - a)/len(auto_pairs))
+    stable_pairs = mth.get_stable_pairs(funct, x_0, y_0, a, b, .125)
 
     print(f"Кол-во пар при автоматическом: {len(auto_pairs)}")
 
