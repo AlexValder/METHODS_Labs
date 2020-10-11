@@ -1,7 +1,6 @@
 *.7z
 *.zip
 /*.py
-output.txt
 /*.djvu
 /*.pdf
 .~lock.*
