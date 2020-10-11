@@ -53,21 +53,12 @@ def get_auto_pairs(f: Callable[[float, float], float], x_0: float, y_0: float, a
 
     x_n = x_0; y_n = y_0; h_n = h_0; h_n2 = h_0 / 2
 
-    #i = 0
-
     def _recursive(x_n: float, y_n: float, h_n: float, h_n2: float):
-#    while abs(b - x_n) > eps_1:
 
         if b - x_n < eps:
             return res_pairs
         elif abs(b - x_n) < h_n:
             h_n = abs(b - x_n)
-
-        #i += 1
-        #if i > 112:
-        #    print(len(res_pairs))
-        #    print(res_pairs[-1])
-        #    exit()
 
         step_full = y_n + _runge(f, x_n, y_n, h_n)
         step_half = y_n + _runge(f, x_n + h_n2, y_n + _runge(f, x_n, y_n, h_n2), h_n2)
