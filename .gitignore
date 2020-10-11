@@ -2,4 +2,7 @@
 *.zip
 /*.py
 output.txt
+/*.djvu
+/*.pdf
+.~lock.*
 __pycache__
