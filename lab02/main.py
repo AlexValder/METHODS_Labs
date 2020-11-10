@@ -18,6 +18,13 @@ import numpy as np
 #  
 # Знайти функцію y(x) на відрізку [a, b]
 
+# TEST:
+# L[y(x)] = x^4 y'' + x^6 y' - x^5 y = 6 - 3x^2, 1 < x < 2,
+# y(1) = 1 
+# 3y(2) + y'(2) = 0.5
+#
+# y* = x^-2   
+
 if __name__ == "__main__":
     
     print("Hi")
