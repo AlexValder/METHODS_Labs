@@ -1,0 +1,3 @@
+[submodule "NumericalAnalysisLab2"]
+	path = lab02/NumericalAnalysisLab2/
+	url = git@github.com:ArthurMamedov/NumericalAnalysisLab2.git
