@@ -1,7 +1,7 @@
 *.7z
 *.zip
 /*.py
-/*.djvu
-/*.pdf
+*.djvu
+*.pdf
 .~lock.*
 __pycache__
